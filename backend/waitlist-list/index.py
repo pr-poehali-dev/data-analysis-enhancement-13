@@ -8,17 +8,27 @@ HEADERS = {
 }
 
 def handler(event: dict, context) -> dict:
-    """Возвращает список email из waitlist для админ-панели clodev.ru"""
+    """Возвращает список email из waitlist. Требует заголовок X-Admin-Password."""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Password',
                 'Access-Control-Max-Age': '86400'
             },
             'body': ''
+        }
+
+    provided = (event.get('headers') or {}).get('X-Admin-Password', '')
+    expected = os.environ.get('ADMIN_PASSWORD', '')
+
+    if not expected or provided != expected:
+        return {
+            'statusCode': 403,
+            'headers': HEADERS,
+            'body': json.dumps({'error': 'Forbidden'})
         }
 
     conn = psycopg2.connect(os.environ['DATABASE_URL'])

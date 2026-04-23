@@ -1,11 +1,11 @@
 {
   "tests": [
     {
-      "name": "Получение списка email",
+      "name": "Без пароля — 403",
       "method": "GET",
       "path": "/",
-      "expectedStatus": 200,
-      "expectedBody": {"total": 1},
+      "expectedStatus": 403,
+      "expectedBody": {"error": "Forbidden"},
       "bodyMatcher": "partial"
     }
   ]

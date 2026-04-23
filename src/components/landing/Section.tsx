@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Icon from "@/components/ui/icon"
 import type { SectionProps } from "@/types"
 
 export default function Section({ id, title, subtitle, content, features, pricing, isActive, showButton, buttonText, showEmailForm }: SectionProps) {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
@@ -132,6 +134,7 @@ export default function Section({ id, title, subtitle, content, features, pricin
         >
           <Button
             size="lg"
+            onClick={() => navigate('/login')}
             className="bg-[#00e5ff] text-black hover:bg-[#00c8e0] font-semibold transition-colors text-base px-8"
           >
             {buttonText}

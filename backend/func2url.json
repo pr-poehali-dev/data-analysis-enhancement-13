@@ -1,4 +1,6 @@
 {
+  "auth": "https://functions.poehali.dev/d57b37fd-f6e7-4796-8a5b-13892b78cfc4",
+  "projects": "https://functions.poehali.dev/8359dca6-0ab1-4bb9-9e56-6dd27e670301",
   "waitlist-list": "https://functions.poehali.dev/4f975c05-5a9e-499b-9df1-c1276b905d98",
   "waitlist": "https://functions.poehali.dev/f7be8510-dfeb-481e-b3a8-0c512d8a38cc"
 }

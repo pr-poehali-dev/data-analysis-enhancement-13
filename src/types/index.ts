@@ -5,6 +5,16 @@ export interface FeatureItem {
   label: string
 }
 
+export interface PricingPlan {
+  name: string
+  price: string
+  period?: string
+  description: string
+  features: string[]
+  highlighted?: boolean
+  buttonText: string
+}
+
 export interface Section {
   id: string
   title: string
@@ -14,6 +24,7 @@ export interface Section {
   showButton?: boolean
   buttonText?: string
   showEmailForm?: boolean
+  pricing?: PricingPlan[]
 }
 
 export interface SectionProps extends Section {

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import Icon from "@/components/ui/icon"
 import type { SectionProps } from "@/types"
 
-export default function Section({ id, title, subtitle, content, features, isActive, showButton, buttonText, showEmailForm }: SectionProps) {
+export default function Section({ id, title, subtitle, content, features, pricing, isActive, showButton, buttonText, showEmailForm }: SectionProps) {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
@@ -23,8 +23,10 @@ export default function Section({ id, title, subtitle, content, features, isActi
     }
   }
 
+  const isPricing = !!pricing
+
   return (
-    <section id={id} className="relative h-screen w-full snap-start flex flex-col justify-center p-8 md:p-16 lg:p-24">
+    <section id={id} className={`relative h-screen w-full snap-start flex flex-col justify-center p-8 md:p-16 lg:p-24 ${isPricing ? 'overflow-hidden' : ''}`}>
       {subtitle && (
         <motion.div
           className="mb-8"
@@ -36,7 +38,7 @@ export default function Section({ id, title, subtitle, content, features, isActi
         </motion.div>
       )}
       <motion.h2
-        className="text-4xl md:text-6xl lg:text-[5rem] xl:text-[6rem] font-bold leading-[1.1] tracking-tight max-w-4xl text-white"
+        className={`font-bold leading-[1.1] tracking-tight text-white ${isPricing ? 'text-3xl md:text-5xl lg:text-6xl max-w-2xl' : 'text-4xl md:text-6xl lg:text-[5rem] xl:text-[6rem] max-w-4xl'}`}
         initial={{ opacity: 0, y: 50 }}
         animate={isActive ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5 }}
@@ -45,7 +47,7 @@ export default function Section({ id, title, subtitle, content, features, isActi
       </motion.h2>
       {content && (
         <motion.p
-          className="text-lg md:text-xl lg:text-2xl max-w-2xl mt-6 text-neutral-400"
+          className={`mt-4 text-neutral-400 ${isPricing ? 'text-base md:text-lg max-w-xl' : 'text-lg md:text-xl lg:text-2xl max-w-2xl mt-6'}`}
           initial={{ opacity: 0, y: 50 }}
           animate={isActive ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -53,6 +55,56 @@ export default function Section({ id, title, subtitle, content, features, isActi
           {content}
         </motion.p>
       )}
+
+      {pricing && (
+        <motion.div
+          className="flex flex-col sm:flex-row gap-4 mt-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isActive ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          {pricing.map((plan, i) => (
+            <div
+              key={i}
+              className={`flex-1 rounded-2xl p-6 border flex flex-col gap-4 transition-all ${
+                plan.highlighted
+                  ? 'border-[#00e5ff]/60 bg-[#00e5ff]/5'
+                  : 'border-white/10 bg-white/3'
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-mono text-sm text-neutral-400">{plan.name}</span>
+                  {plan.highlighted && (
+                    <span className="text-[10px] font-mono text-[#00e5ff] border border-[#00e5ff]/40 px-2 py-0.5 rounded-full">Popular</span>
+                  )}
+                </div>
+                <div className="flex items-end gap-1">
+                  <span className="text-white font-bold text-3xl">{plan.price}</span>
+                  {plan.period && <span className="text-neutral-500 text-sm mb-1 font-mono">{plan.period}</span>}
+                </div>
+                <p className="text-neutral-500 text-xs font-mono mt-1">{plan.description}</p>
+              </div>
+              <ul className="flex flex-col gap-2 flex-1">
+                {plan.features.map((f, j) => (
+                  <li key={j} className="flex items-center gap-2 text-sm text-neutral-300 font-mono">
+                    <Icon name="Check" size={13} className="text-[#00e5ff] shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <button className={`w-full py-2.5 rounded-lg text-sm font-semibold font-mono transition-colors mt-2 ${
+                plan.highlighted
+                  ? 'bg-[#00e5ff] text-black hover:bg-[#00c8e0]'
+                  : 'border border-white/15 text-white hover:bg-white/10'
+              }`}>
+                {plan.buttonText}
+              </button>
+            </div>
+          ))}
+        </motion.div>
+      )}
+
       {features && features.length > 0 && (
         <motion.div
           className="flex flex-wrap gap-4 mt-10"

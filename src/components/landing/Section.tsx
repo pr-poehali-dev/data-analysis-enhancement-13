@@ -9,9 +9,16 @@ export default function Section({ id, title, subtitle, content, features, isActi
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email.trim()) {
+    if (!email.trim()) return
+    try {
+      await fetch('https://functions.poehali.dev/f7be8510-dfeb-481e-b3a8-0c512d8a38cc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+    } finally {
       setSubmitted(true)
     }
   }

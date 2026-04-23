@@ -1,0 +1,31 @@
+{
+  "tests": [
+    {
+      "name": "Сохранение email в waitlist",
+      "method": "POST",
+      "path": "/",
+      "body": {"email": "test@clodev.ru"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Повторный email не вызывает ошибку",
+      "method": "POST",
+      "path": "/",
+      "body": {"email": "test@clodev.ru"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Некорректный email",
+      "method": "POST",
+      "path": "/",
+      "body": {"email": "notanemail"},
+      "expectedStatus": 400,
+      "expectedBody": {"error": "Некорректный email"},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

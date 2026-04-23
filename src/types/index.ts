@@ -13,6 +13,7 @@ export interface Section {
   features?: FeatureItem[]
   showButton?: boolean
   buttonText?: string
+  showEmailForm?: boolean
 }
 
 export interface SectionProps extends Section {

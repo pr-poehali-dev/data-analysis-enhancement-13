@@ -1,9 +1,21 @@
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import Icon from "@/components/ui/icon"
 import type { SectionProps } from "@/types"
 
-export default function Section({ id, title, subtitle, content, features, isActive, showButton, buttonText }: SectionProps) {
+export default function Section({ id, title, subtitle, content, features, isActive, showButton, buttonText, showEmailForm }: SectionProps) {
+  const [email, setEmail] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (email.trim()) {
+      setSubmitted(true)
+    }
+  }
+
   return (
     <section id={id} className="relative h-screen w-full snap-start flex flex-col justify-center p-8 md:p-16 lg:p-24">
       {subtitle && (
@@ -65,6 +77,44 @@ export default function Section({ id, title, subtitle, content, features, isActi
           >
             {buttonText}
           </Button>
+        </motion.div>
+      )}
+      {showEmailForm && (
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isActive ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-12"
+        >
+          {!submitted ? (
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md">
+              <Input
+                type="email"
+                placeholder="you@company.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-white/5 border-white/20 text-white placeholder:text-neutral-500 focus:border-[#00e5ff] focus:ring-[#00e5ff] h-12 text-base"
+              />
+              <Button
+                type="submit"
+                size="lg"
+                className="bg-[#00e5ff] text-black hover:bg-[#00c8e0] font-semibold transition-colors whitespace-nowrap h-12"
+              >
+                Получить доступ
+              </Button>
+            </form>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-3 text-[#00e5ff] text-lg font-mono"
+            >
+              <Icon name="CheckCircle" size={22} />
+              Отлично! Пришлём ссылку на <span className="text-white">{email}</span>
+            </motion.div>
+          )}
+          <p className="mt-4 text-sm text-neutral-600 font-mono">Без спама. Только приглашение.</p>
         </motion.div>
       )}
     </section>
